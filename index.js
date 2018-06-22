@@ -25,7 +25,7 @@ function readFileData(resolve, reject,
         if (!otherRows[key]) continue;
         var _obj = {};
         var _element =
-          readFileData__convertToArray(
+          readFileData__convertToArray_2(
             otherRows[key]);
         //console.log('element after',_element);
         /** Handle any kind of comma within double quotes */
@@ -130,3 +130,41 @@ function readFileData(resolve, reject,
     })
     return _output;
   }
+
+ function readFileData__convertToArray_2(line) {
+
+   var dataArray = [];
+   var tempString = "";
+   var lineLength = line.length;
+   var index = 0;
+   while (index < lineLength) {
+     if (line[index] == '"') {
+       var index2 = index + 1;
+       while (line[index2] != '"') {
+         tempString += line[index2];
+         index2++;
+       }
+       dataArray.push(tempString);
+       tempString = "";
+       index = index2 + 2;
+       continue;
+     }
+     if (line[index] != ",") {
+       tempString += line[index];
+       index++;
+       continue;
+     }
+     if (line[index] == ",") {
+       dataArray.push(tempString);
+       tempString = "";
+       index++;
+       continue;
+     }
+
+   }
+   dataArray.push(tempString);
+   return dataArray;
+
+   return _output;
+
+ }
